@@ -29,12 +29,45 @@ const create = async ({title, author, url, likes})=>{
     return response.data
 }
 
-const update = async()=>{
-    
+const update = async(blog)=>{
+    const resourceAddress = `${baseUrl}/${blog.id}`
+    const config = {
+        headers: {
+            Authorization: token
+        }
+    }
+    const bodyParameters = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: blog.likes,
+        userId: blog.user.id
+    }
+    const response = await axios.put(resourceAddress,bodyParameters, config)
+    return response.data
 }
 
-const deleteBlog = ()=>{
-
+const deleteBlog = async(blogId)=>{
+    let config = {
+        headers: {
+            "token": token,
+            "Content-Type": "application/json"
+        }
+    }
+    const resourceAddress = `${baseUrl}/${blogId}`
+    // const config = {
+    //     headers: {
+    //         Authorization: token
+    //     }
+    // }
+    const response = await axios.delete(resourceAddress, {headers:
+        {
+        'Content-Type': 'application/json',
+        Authorization: token
+      }
+    }) 
+    console.log(response)
+    return response
 }
 
 export default {
