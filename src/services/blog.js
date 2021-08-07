@@ -3,16 +3,16 @@ const baseUrl = '/api/blogs'
 
 let token = ''
 
-const setToken = (newToken)=>{
+const setToken = (newToken) => {
     token = `Bearer ${newToken}`
 }
 
-const getAll = async ()=>{
+const getAll = async () => {
     const response = await axios.get(baseUrl)
     return response.data
 }
 
-const create = async ({title, author, url, likes})=>{
+const create = async ({ title, author, url, likes }) => {
     console.log('token', token)
     const config = {
         headers: {
@@ -29,7 +29,7 @@ const create = async ({title, author, url, likes})=>{
     return response.data
 }
 
-const update = async(blog)=>{
+const update = async(blog) => {
     const resourceAddress = `${baseUrl}/${blog.id}`
     const config = {
         headers: {
@@ -47,25 +47,19 @@ const update = async(blog)=>{
     return response.data
 }
 
-const deleteBlog = async(blogId)=>{
-    let config = {
-        headers: {
-            "token": token,
-            "Content-Type": "application/json"
-        }
-    }
+const deleteBlog = async(blogId) => {
     const resourceAddress = `${baseUrl}/${blogId}`
     // const config = {
     //     headers: {
     //         Authorization: token
     //     }
     // }
-    const response = await axios.delete(resourceAddress, {headers:
+    const response = await axios.delete(resourceAddress, { headers:
         {
-        'Content-Type': 'application/json',
-        Authorization: token
-      }
-    }) 
+            'Content-Type': 'application/json',
+            Authorization: token
+        }
+    })
     console.log(response)
     return response
 }
