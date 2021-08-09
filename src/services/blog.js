@@ -30,6 +30,7 @@ const create = async ({ title, author, url, likes }) => {
 }
 
 const update = async(blog) => {
+    console.log('blog', blog)
     const resourceAddress = `${baseUrl}/${blog.id}`
     const config = {
         headers: {
@@ -43,7 +44,7 @@ const update = async(blog) => {
         likes: blog.likes,
         userId: blog.user.id
     }
-    const response = await axios.put(resourceAddress,bodyParameters, config)
+    let response = await axios.put(resourceAddress,bodyParameters, config)
     return response.data
 }
 
@@ -54,13 +55,12 @@ const deleteBlog = async(blogId) => {
     //         Authorization: token
     //     }
     // }
-    const response = await axios.delete(resourceAddress, { headers:
+    console.log('smt')
+    let response = await axios.delete(resourceAddress, { headers:
         {
-            'Content-Type': 'application/json',
             Authorization: token
         }
     })
-    console.log(response)
     return response
 }
 

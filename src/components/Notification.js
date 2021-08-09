@@ -7,7 +7,9 @@ const Notification =({ message, variant }) => {
     }
     return(
         <>
-            <Alert variant={variant}>
+            <Alert
+                variant={variant}
+                className="feedbackNotification">
                 {message}
             </Alert>
         </>

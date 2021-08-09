@@ -10,8 +10,9 @@ function App() {
 
     return (
         <Container>
-            <Row className="justify-content-center">
+            <Row className="justify-content-end align-items-end">
                 <Col xs={6}>
+                    <span>{user ? `${user.username} logged in` : null} </span>
                     <Login setUserState={(userDetails) => setUser(userDetails)} user={user}/>
                 </Col>
             </Row>

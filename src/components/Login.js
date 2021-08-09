@@ -18,6 +18,7 @@ const LoginForm = ({
             <FormGroup className="mb-3" controlID="formBasicUsername">
                 <FormLabel>Username</FormLabel>
                 <FormControl
+                    className="usernameInput"
                     type="text"
                     placeholder="Enter your username"
                     value={username}
@@ -27,6 +28,7 @@ const LoginForm = ({
             <FormGroup className="mb-3" controlID="formBasicUsername">
                 <FormLabel>Password</FormLabel>
                 <FormControl
+                    id="userPassword"
                     type="password"
                     placeholder="Enter your password"
                     value={password}

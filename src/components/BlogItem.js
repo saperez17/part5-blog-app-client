@@ -12,16 +12,16 @@ export const BlogItem = ({ blogInfo, likeBlogPost, deleteBlog }) => {
     }
 
     return(
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row blogItemWrapper">
             <div className="d-flex flex-column  m-1">
                 <div className="headerInfo">
-                    <h3> {blogInfo.title} </h3>
+                    <h3 className="blogTitle"> {blogInfo.title} </h3>
                     <p className="mb-0">{blogInfo.author } </p>
                 </div>
                 <div style={hideWhenVisible} className="bodyInfo">
                     <p className="mb-0">{blogInfo.url} </p>
                     <div className="d-flex flex-row">
-                        <p className="mr-2"> {blogInfo.likes} </p>
+                        <p className="mr-2 likesNumber"> {blogInfo.likes} </p>
                         <Button
                             style={{
                                 height:'1.5rem',
@@ -50,6 +50,7 @@ export const BlogItem = ({ blogInfo, likeBlogPost, deleteBlog }) => {
 
             <div className="d-flex justify-content-center align-items-center">
                 <Button
+                    className="viewBtn"
                     variant="secondary"
                     onClick={toggleContent}
                     style={{ height:'2rem' }}

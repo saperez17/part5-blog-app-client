@@ -6,10 +6,14 @@ import Notification from './Notification'
 import Togglable from './Togglable'
 import { BlogItem } from './BlogItem'
 
-const Blogs = () => {
+const Blogs = ({ user }) => {
     const [blogs, setBlogs] = useState([])
     const [feedbackMesssage, setFeedbackMessage] = useState(null)
     const blogFormRef = useRef()
+    const [userInfo, setUserInfo] = useState(null)
+    useEffect(() => {
+        setUserInfo(user)
+    },[user])
     useEffect(() => {
         try{
             blogService.getAll().then(
@@ -24,9 +28,13 @@ const Blogs = () => {
     }, [])
 
     const addBlog = (blog) => {
-        blogService.create(blog)
+        if (userInfo.token === null){
+            console.log('cannot add blog')
+            return
+        }
+        blogService.create({ ...blog, user: { id:userInfo.userId } })
             .then(res => {
-                setBlogs(prevBlogs => [...prevBlogs, blog])
+                setBlogs(prevBlogs => [...prevBlogs, res])
                 setFeedbackMessage({ message:`A new blog ${res.title} has been added`, variant:'success' })
                 setTimeout(() => {
                     setFeedbackMessage(null)
@@ -51,6 +59,7 @@ const Blogs = () => {
         try{
             blogService.deleteBlog(blogToDelete.id)
                 .then(() => {
+                    console.log('got into here')
                     setBlogs(blogs.filter(blog => blog.id!==blogId))
                     setFeedbackMessage({ message:`Blog post ${blogToDelete.title} successfully deleted`, variant:'info' })
                     setTimeout(() => {
@@ -79,7 +88,6 @@ const Blogs = () => {
             return -1
         }
         return 0
-
     })
     return(
         <div>
