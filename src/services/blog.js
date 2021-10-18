@@ -26,7 +26,7 @@ const create = async ({ title, author, url, likes }) => {
         likes
     }
     const response = await axios.post(baseUrl,bodyParameters, config)
-    return response.data
+    return response
 }
 
 const update = async(blog) => {

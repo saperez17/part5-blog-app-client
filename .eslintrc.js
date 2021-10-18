@@ -22,23 +22,21 @@ module.exports = {
     ],
     "rules": {
         "react/jsx-indent-props": "off",
-        "react/jsx-indent-props": [2],
-        "indent": [
-            "error",
-            4
-        ],
+        "react/jsx-indent-props": [0],
+        // "indent": [
+        //     "error",
+        //     4
+        // ],
         "linebreak-style": [
             "error",
             "unix"
         ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
+        // "quotes": [
+        //     "double",
+        // ],
+        // "semi": [
+        //     "off",
+        // ],
         "eqeqeq": "error",
         "no-trailing-spaces": "error",
         "object-curly-spacing": [

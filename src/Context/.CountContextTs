@@ -1,0 +1,9 @@
+// import * as React from 'react'
+
+// type Action = {type: 'increment'} 
+// type Dispatch = (action: Action) => void
+// type State = {count: number}
+// type COuntProviderProps = {children: React.ReactNode}
+
+// const CountStateContext = React.createContext<
+// {state:State, dispatch:Dispatch} | undefined>(undefined)

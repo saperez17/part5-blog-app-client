@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap'
 
 const BlogForm = ({ handleBlogSubmit }) => {
-    const [blog, setBlog] = useState({ title:'', autor:'', url:'' })
+    const [blog, setBlog] = useState({ title:'', author:'', url:'' })
 
     const setBlogAttribute = (e, attributeName ) => {
         setBlog(preVal => (
@@ -11,7 +11,7 @@ const BlogForm = ({ handleBlogSubmit }) => {
                 ...preVal,
                 [attributeName]:e.value
             }
-        ))
+        ));
     }
 
     return(
@@ -35,7 +35,7 @@ const BlogForm = ({ handleBlogSubmit }) => {
                             type="text"
                             placeholder="blog's author"
                             value={blog.author}
-                            onChange={({ target }) => setBlogAttribute(target, 'autor')}>
+                            onChange={({ target }) => setBlogAttribute(target, 'author')}>
                         </FormControl>
                     </FormGroup>
                 </div>
