@@ -8,7 +8,7 @@ import Togglable from "./Togglable";
 import { BlogItem } from "./BlogItem";
 import { Table } from "react-bootstrap";
 import { setNotification, clearNotification } from "reducers/notification";
-import { createBlogPost } from 'reducers/blogPosts';
+import { createBlogPost, likeBlogPost, deleteBlogPost } from 'reducers/blogPosts';
 
 // import { fetchBlogPosts } from 'reducers/blogPosts';
 
@@ -26,16 +26,6 @@ const Blogs = ({ user }) => {
   useEffect(() => {
     setUserInfo(user);
   }, [user]);
-//   useEffect(() => {
-//     try {
-//       blogService.getAll().then((blogs) => {
-//         setBlogs(blogs);
-//         console.log(blogs);
-//       });
-//     } catch (exception) {
-//       console.log(exception);
-//     }
-//   }, []);
 
   const addBlog = (blog) => {
     if (userInfo.token === null) {
@@ -43,79 +33,16 @@ const Blogs = ({ user }) => {
       return;
     }
     dispatch(createBlogPost({ blog, userInfo }))
-    // blogService
-    //   .create({ ...blog, user: { id: userInfo.userId } })
-    //   .then((res) => {
-    //     setBlogs((prevBlogs) => [...prevBlogs, res]);
-    //     dispatch(
-    //       setNotification({
-    //         message: `A new blog ${res.title} has been added`,
-    //         variant: "success",
-    //       })
-    //     );
-    //     setTimeout(() => {
-    //       dispatch(clearNotification());
-    //     }, 5000);
-    //     blogFormRef.current.toogleVisibility();
-    //   });
   };
 
   const handleLikeBlog = (blogId) => {
     const blogToUpdate = blogPosts.filter((blog) => blog.id === blogId)[0];
     blogToUpdate.likes = blogToUpdate.likes + 1;
-    blogService.update(blogToUpdate).then(() => {
-
-      dispatch(
-        setNotification({
-          message: `A new blog ${blogToUpdate.title} successfully updated`,
-          variant: "info",
-        })
-      );
-      setTimeout(() => {
-        dispatch(clearNotification());
-      }, 5000);
-    });
+    dispatch(likeBlogPost(blogToUpdate))
   };
   const handleDeleteBlog = (blogId) => {
     const blogToDelete = blogPosts.filter((blog) => blog.id === blogId)[0];
-    try {
-      blogService
-        .deleteBlog(blogToDelete.id)
-        .then(() => {
-          console.log("got into here");
-          setBlogs(blogPosts.filter((blog) => blog.id !== blogId));
-          dispatch(
-            setNotification({
-              message: `A new blog ${blogToDelete.title} successfully deleted`,
-              variant: "info",
-            })
-          );
-          setTimeout(() => {
-            dispatch(clearNotification());
-          }, 5000);
-        })
-        .catch(() => {
-          dispatch(
-            setNotification({
-              message: `Only creators can delete blog posts`,
-              variant: "dark",
-            })
-          );
-          setTimeout(() => {
-            dispatch(clearNotification());
-          }, 5000);
-        });
-    } catch (exception) {
-      dispatch(
-        setNotification({
-          message: `Ups, something went wrong`,
-          variant: "danger",
-        })
-      );
-      setTimeout(() => {
-        dispatch(clearNotification());
-      }, 5000);
-    }
+    dispatch(deleteBlogPost(blogToDelete));
   };
 
   const sortedBlogs = blogPosts.sort((blogA, blogB) => {

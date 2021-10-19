@@ -45,7 +45,7 @@ const update = async(blog) => {
         userId: blog.user.id
     }
     let response = await axios.put(resourceAddress,bodyParameters, config)
-    return response.data
+    return response
 }
 
 const deleteBlog = async(blogId) => {
