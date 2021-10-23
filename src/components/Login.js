@@ -8,7 +8,7 @@ import {
 } from "react-bootstrap";
 import blogService from "../services/blog";
 import { useDispatch } from "react-redux";
-import { signOutUser, logInUser } from "reducers/user";
+import { logInUser } from "reducers/user";
 
 const LoginForm = ({
   handleSubmit,
@@ -63,13 +63,9 @@ const Login = ({ setUserState, user }) => {
     dispatch(logInUser({ username, password }));
   };
 
-  const handleLogOut = () => {
-    dispatch(signOutUser());
-  };
-
   return (
     <div>
-      {user === null ? (
+      {user === null && (
         <div>
           <h1>Log in to application</h1>
           <LoginForm
@@ -80,13 +76,7 @@ const Login = ({ setUserState, user }) => {
             password={password}
           />
         </div>
-      ) : (
-        <div>
-          <Button variant="primary" onClick={handleLogOut}>
-            log out
-          </Button>
-        </div>
-      )}
+      ) }
     </div>
   );
 };

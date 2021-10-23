@@ -8,52 +8,73 @@ import Togglable from "./Togglable";
 import { BlogItem } from "./BlogItem";
 import { Table } from "react-bootstrap";
 import { setNotification, clearNotification } from "reducers/notification";
-import { createBlogPost, likeBlogPost, deleteBlogPost } from 'reducers/blogPosts';
+import { fetchBlogPosts } from "reducers/blogPosts";
+import { useParams } from "react-router";
+import {
+  createBlogPost,
+  likeBlogPost,
+  deleteBlogPost,
+} from "reducers/blogPosts";
+import BlogDetail from "components/BlogDetail";
 
 // import { fetchBlogPosts } from 'reducers/blogPosts';
 
 const Blogs = ({ user }) => {
   const [blogs, setBlogs] = useState([]);
+  const [blogToRender, setBlogToRender] = useState([]);
   const blogFormRef = useRef();
   const [userInfo, setUserInfo] = useState(null);
   const dispatch = useDispatch();
+  const params = useParams();
+
   const notification = useSelector((state) => {
     return state.notification;
   });
-  const blogPosts = useSelector(state => {
-      return state.blogPost;
-  })
+  const blogPosts = useSelector((state) => {
+    return state.blogPost;
+  });
   useEffect(() => {
     setUserInfo(user);
   }, [user]);
 
+  useEffect(() => {
+    dispatch(fetchBlogPosts());
+  }, []);
+
   const addBlog = (blog) => {
     if (userInfo.token === null) {
-      console.log("cannot add blog");
       return;
     }
-    dispatch(createBlogPost({ blog, userInfo }))
+    dispatch(createBlogPost({ blog, userInfo }));
   };
 
   const handleLikeBlog = (blogId) => {
     const blogToUpdate = blogPosts.filter((blog) => blog.id === blogId)[0];
     blogToUpdate.likes = blogToUpdate.likes + 1;
-    dispatch(likeBlogPost(blogToUpdate))
+    dispatch(likeBlogPost(blogToUpdate));
   };
   const handleDeleteBlog = (blogId) => {
     const blogToDelete = blogPosts.filter((blog) => blog.id === blogId)[0];
     dispatch(deleteBlogPost(blogToDelete));
   };
+  const blogArrayToRender = () => {
+    if (!params.blogId) {
+      return [...blogPosts].sort((blogA, blogB) => {
+        if (blogA.likes - blogB.likes < 0) {
+          return 1;
+        }
+        if (blogA.likes - blogB.likes > 0) {
+          return -1;
+        }
+        return 0;
+      });
+    } else {
+      return [...blogPosts].filter((blog) => blog.id === params.blogId);
+    }
+  };
 
-  const sortedBlogs = blogPosts.sort((blogA, blogB) => {
-    if (blogA.likes - blogB.likes < 0) {
-      return 1;
-    }
-    if (blogA.likes - blogB.likes > 0) {
-      return -1;
-    }
-    return 0;
-  });
+  const blogArray = blogArrayToRender();
+
   return (
     <div>
       {notification.message !== "" && (
@@ -65,29 +86,36 @@ const Blogs = ({ user }) => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm handleBlogSubmit={addBlog} />
       </Togglable>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Blog title</th>
-            <th>Author</th>
-            <th>URL</th>
-            <th>Likes</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedBlogs.map((blog, key) => (
-            <BlogItem
-              key={key}
-              idx={key}
-              blogInfo={blog}
-              likeBlogPost={handleLikeBlog}
-              deleteBlog={handleDeleteBlog}
-            />
-          ))}
-        </tbody>
-      </Table>
+
+      {blogArray.length > 1 ? (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Blog title</th>
+              <th>Author</th>
+              <th>URL</th>
+              <th>Likes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {blogArray.map((blog, key) => (
+              <BlogItem
+                key={key}
+                idx={key}
+                blogInfo={blog}
+                likeBlogPost={handleLikeBlog}
+                deleteBlog={handleDeleteBlog}
+              />
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        blogArray.map((blog, key) => (
+          <BlogDetail key={key} blogInfo={blog} likeBlogPost={handleLikeBlog} />
+        ))
+      )}
     </div>
   );
 };

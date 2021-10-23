@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
-
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
 
 export const BlogItem = ({ blogInfo, likeBlogPost, deleteBlog, idx }) => {
@@ -15,7 +15,7 @@ export const BlogItem = ({ blogInfo, likeBlogPost, deleteBlog, idx }) => {
     return(
         <tr>
             <td> {idx+1} </td>
-            <td> {blogInfo.title} </td>
+            <td> <Link to={`/blogs/${blogInfo.id}`}>{blogInfo.title}</Link>  </td>
             <td> {blogInfo.author} </td>
             <td> {blogInfo.url} </td>
             <td> {blogInfo.likes} </td>
