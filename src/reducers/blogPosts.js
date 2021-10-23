@@ -93,6 +93,35 @@ export const likeBlogPost = (blogToUpdate) => {
     }
   };
 };
+export const commentBlogPost = (blogToComment, comment) => {
+  return async (dispatch) => {
+    try {
+      const res = await blogService.comment(blogToComment.id, comment);
+      if (res.status === 200) {
+        console.log('res', res.data);
+        dispatch({
+          type: 'UPDATE',
+          data: res.data,
+        });
+        dispatch(
+          setNotification({
+            message: `${blogToComment.title} was commented`,
+            variant: 'info',
+          })
+        );
+      } else {
+        dispatch(
+          setNotification({
+            message: `Ops, something went wrong`,
+            variant: "danger",
+          })
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
 
 export const deleteBlogPost = (blogToDelete) => {
   return async (dispatch) => {

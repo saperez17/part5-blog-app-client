@@ -47,15 +47,17 @@ const update = async(blog) => {
     let response = await axios.put(resourceAddress,bodyParameters, config)
     return response
 }
+const comment = async(blogId, comment) => {
+    const resourceAddress = `${baseUrl}/${blogId}/comments`
+    const bodyParameters = {
+        comment: comment
+    }
+    let response = await axios.post(resourceAddress,bodyParameters)
+    return response
+}
 
 const deleteBlog = async(blogId) => {
     const resourceAddress = `${baseUrl}/${blogId}`
-    // const config = {
-    //     headers: {
-    //         Authorization: token
-    //     }
-    // }
-    console.log('smt')
     let response = await axios.delete(resourceAddress, { headers:
         {
             Authorization: token
@@ -69,5 +71,6 @@ export default {
     create,
     update,
     deleteBlog,
-    setToken
+    setToken,
+    comment
 }

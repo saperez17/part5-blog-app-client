@@ -14,6 +14,7 @@ import {
   createBlogPost,
   likeBlogPost,
   deleteBlogPost,
+  commentBlogPost
 } from "reducers/blogPosts";
 import BlogDetail from "components/BlogDetail";
 
@@ -57,6 +58,11 @@ const Blogs = ({ user }) => {
     const blogToDelete = blogPosts.filter((blog) => blog.id === blogId)[0];
     dispatch(deleteBlogPost(blogToDelete));
   };
+  const handleCommentBlog = (blogId, comment) => {
+    const blogToComment = blogPosts.filter((blog) => blog.id === blogId)[0];
+    dispatch(commentBlogPost(blogToComment, comment))
+  }
+
   const blogArrayToRender = () => {
     if (!params.blogId) {
       return [...blogPosts].sort((blogA, blogB) => {
@@ -113,7 +119,12 @@ const Blogs = ({ user }) => {
         </Table>
       ) : (
         blogArray.map((blog, key) => (
-          <BlogDetail key={key} blogInfo={blog} likeBlogPost={handleLikeBlog} />
+          <BlogDetail
+          key={key}
+          blogInfo={blog}
+          likeBlogPost={handleLikeBlog}
+          commentBlog={handleCommentBlog}
+          />
         ))
       )}
     </div>
